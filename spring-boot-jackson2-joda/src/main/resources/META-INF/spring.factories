@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+top.infra.jackson2.JodaTimeJackson2AutoConfiguration

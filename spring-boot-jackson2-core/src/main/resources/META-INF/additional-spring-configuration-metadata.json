@@ -1,0 +1,26 @@
+{
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "spring.jackson.jaxb.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": "false"
+    }
+  ],
+  "hints": [
+    {
+      "name": "spring.jackson.jaxb.enabled",
+      "values": [
+        {
+          "value": "true",
+          "description": "Enables configuration of JAXB annotations."
+        },
+        {
+          "value": "false",
+          "description": "Disabled configuration of JAXB annotations."
+        }
+      ]
+    }
+  ]
+}

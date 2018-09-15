@@ -1,0 +1,3 @@
+
+spring.jackson:
+  jaxb.enabled: true

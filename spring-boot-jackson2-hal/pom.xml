@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>spring-boot-jackson2-hal</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <parent>
+        <artifactId>spring-boot-jackson2</artifactId>
+        <groupId>top.infra</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <!-- @formatter:off -->
+    <dependencies>
+        <dependency><groupId>org.springframework.hateoas</groupId><artifactId>spring-hateoas</artifactId></dependency>
+
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-core</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-tests</artifactId><scope>test</scope></dependency>
+    </dependencies>
+    <!-- @formatter:on -->
+
+    <properties>
+    </properties>
+</project>
