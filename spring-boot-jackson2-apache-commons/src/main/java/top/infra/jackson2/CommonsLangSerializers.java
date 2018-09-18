@@ -9,11 +9,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.BasicSerializerFactory;
-import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.Serializers;
-import com.fasterxml.jackson.databind.type.MapLikeType;
-import com.fasterxml.jackson.databind.type.ReferenceType;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -22,25 +18,15 @@ import java.util.Collection;
 import top.infra.jackson2.ser.PairSerializer;
 
 /**
- * see: {@link BasicSerializerFactory}
- * see: {@link BeanSerializerFactory}
- * see: com.fasterxml.jackson.datatype.guava.GuavaSerializers
+ * {@link com.fasterxml.jackson.databind.ser.BasicSerializerFactory#buildMapEntrySerializer(SerializationConfig, JavaType, BeanDescription, boolean, JavaType, JavaType)}.
+ * {@link com.fasterxml.jackson.databind.ser.BeanSerializerFactory}
+ * com.fasterxml.jackson.datatype.guava.GuavaSerializers
  */
 public class CommonsLangSerializers extends Serializers.Base {
 
     @Override
-    public JsonSerializer<?> findReferenceSerializer(
-        SerializationConfig config,
-        ReferenceType refType,
-        BeanDescription beanDesc,
-        TypeSerializer contentTypeSerializer,
-        JsonSerializer<Object> contentValueSerializer
-    ) {
-        return super.findReferenceSerializer(config, refType, beanDesc, contentTypeSerializer, contentValueSerializer);
-    }
-
-    @Override
-    public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type, BeanDescription beanDesc) {
+    public JsonSerializer<?> findSerializer(
+        final SerializationConfig config, final JavaType type, final BeanDescription beanDesc) {
         // see: BasicSerializerFactory.buildContainerSerializer
         if (Pair.class.isAssignableFrom(type.getRawClass())) {
             // Let's see what we can learn about element/content/value type, type serializer for it:
@@ -54,20 +40,8 @@ public class CommonsLangSerializers extends Serializers.Base {
         return super.findSerializer(config, type, beanDesc);
     }
 
-    @Override
-    public JsonSerializer<?> findMapLikeSerializer(
-        SerializationConfig config,
-        MapLikeType type,
-        BeanDescription beanDesc,
-        JsonSerializer<Object> keySerializer,
-        TypeSerializer elementTypeSerializer,
-        JsonSerializer<Object> elementValueSerializer
-    ) {
-        return super.findMapLikeSerializer(config, type, beanDesc, keySerializer, elementTypeSerializer, elementValueSerializer);
-    }
-
     /**
-     * see: {@link BasicSerializerFactory#createTypeSerializer(SerializationConfig, JavaType)}
+     * see: {@link com.fasterxml.jackson.databind.ser.BasicSerializerFactory#createTypeSerializer(SerializationConfig, JavaType)}.
      */
     public TypeSerializer createTypeSerializer(final SerializationConfig config, final JavaType baseType) {
         if (baseType == null) {

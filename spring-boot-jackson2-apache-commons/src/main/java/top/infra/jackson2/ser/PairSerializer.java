@@ -18,6 +18,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * see: {@link com.fasterxml.jackson.databind.ser.impl.MapEntrySerializer}.
+ */
 public class PairSerializer extends StdSerializer<Pair<?, ?>> implements ContextualSerializer {
 
     /**
@@ -165,12 +168,27 @@ public class PairSerializer extends StdSerializer<Pair<?, ?>> implements Context
         final Pair<?, ?> value, final JsonGenerator gen, final SerializerProvider provider
     ) throws IOException {
         gen.writeStartObject(value);
-        if (this._vs != null) {
-            //serializeUsing(value, gen, provider, _vs);
-        } else {
-            serializeDynamic(value, gen, provider);
-        }
+        //if (this._vs != null) {
+        //    serializeUsing(value, gen, provider, _vs);
+        //} else {
+        serializeDynamic(value, gen, provider);
+        //}
         gen.writeEndObject();
+    }
+
+    @Override
+    public void serializeWithType(
+        final Pair<?, ?> value, final JsonGenerator gen, final SerializerProvider provider, final TypeSerializer typeSer
+    ) throws IOException {
+        typeSer.writeTypePrefixForObject(value, gen);
+        // [databind#631]: Assign current value, to be accessible by custom serializers
+        gen.setCurrentValue(value);
+        //if (this._vs != null) {
+        //    serializeUsing(value, gen, provider, _vs);
+        //} else {
+        serializeDynamic(value, gen, provider);
+        //}
+        typeSer.writeTypeSuffixForObject(value, gen);
     }
 
     protected void serializeDynamic(

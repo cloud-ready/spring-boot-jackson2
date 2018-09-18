@@ -1,5 +1,7 @@
 package top.infra.jackson2;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.DeserializerFactory;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class CommonsLangModule extends SimpleModule {
@@ -8,7 +10,9 @@ public class CommonsLangModule extends SimpleModule {
 
     @Override
     public void setupModule(final SetupContext context) {
-        //context.addDeserializers(new CommonsLangDeserializers(_defaultBoundType));
+        final ObjectMapper mapper = context.getOwner();
+        final DeserializerFactory deserializerFactory = mapper.getDeserializationContext().getFactory();
+        context.addDeserializers(new CommonsLangDeserializers(deserializerFactory));
         context.addSerializers(new CommonsLangSerializers());
     }
 
