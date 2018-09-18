@@ -12,7 +12,7 @@ public class CommonsLangJackson2MapperCustomizerFactory implements Jackson2Mappe
     @Override
     public Optional<Jackson2MapperCustomizer> getObject() {
         return this.newInstanceIfPresent(
-            "top.infra.jackson2.JodaTimeJackson2Customizer",
+            "top.infra.jackson2.CommonsLangJackson2Customizer",
             Lists.newArrayList(
                 CLASS_MUTABLE_PAIR,
                 CLASS_PAIR,
