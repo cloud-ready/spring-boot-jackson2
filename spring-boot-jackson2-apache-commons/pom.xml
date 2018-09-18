@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>spring-boot-jackson2-all</artifactId>
+    <artifactId>spring-boot-jackson2-apache-commons</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <parent>
@@ -13,10 +13,10 @@
 
     <!-- @formatter:off -->
     <dependencies>
+        <dependency><groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId></dependency>
+
         <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-core</artifactId></dependency>
-        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-hal</artifactId></dependency>
-        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-jaxb</artifactId></dependency>
-        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-joda</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-tests</artifactId><scope>test</scope></dependency>
     </dependencies>
     <!-- @formatter:on -->
 

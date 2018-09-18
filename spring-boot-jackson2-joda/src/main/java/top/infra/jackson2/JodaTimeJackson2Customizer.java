@@ -40,8 +40,10 @@ public class JodaTimeJackson2Customizer implements Jackson2Customizer {
         SimpleModule module = new SimpleModule();
         JacksonJodaDateFormat jacksonJodaFormat = getJacksonJodaDateFormat(properties);
         if (jacksonJodaFormat != null) {
-            module.addSerializer(DateTime.class,
-                new DateTimeSerializer(jacksonJodaFormat, 1)); // see: JodaDateSerializerBase.FORMAT_STRING
+            final DateTimeSerializer dateTimeSerializer = new DateTimeSerializer(jacksonJodaFormat); // jackson2 2.8.x
+            // since jackson2 2.9.x, see: JodaDateSerializerBase.FORMAT_STRING
+            //final DateTimeSerializer dateTimeSerializer = new DateTimeSerializer(jacksonJodaFormat, 1); // since jackson2 2.9.x
+            module.addSerializer(DateTime.class, dateTimeSerializer);
         }
         return module;
     }

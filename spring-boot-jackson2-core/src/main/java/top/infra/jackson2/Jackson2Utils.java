@@ -40,12 +40,14 @@ public abstract class Jackson2Utils {
      *
      * @param properties   jackson2Properties
      * @param objectMapper ObjectMapper or XmlMapper to customize
+     * @return objectMapper
      */
-    public static void customize(final Jackson2Properties properties, final ObjectMapper objectMapper) {
+    public static ObjectMapper customize(final Jackson2Properties properties, final ObjectMapper objectMapper) {
         for (final Jackson2MapperCustomizer customizer : jackson2MapperCustomizers()) {
             log.info("customize objectMapper: '{}' using: '{}'.", objectMapper, customizer);
             customizer.customize(properties, objectMapper);
         }
+        return objectMapper;
     }
 
     public static <T> Function<String, T> fromJson( //
@@ -99,8 +101,8 @@ public abstract class Jackson2Utils {
     static List<Jackson2MapperCustomizerFactory> jackson2MapperCustomizerFactories() {
         final String basePackage = Jackson2Utils.class.getName().split("\\.")[0];
 
-        final Set<Class<Jackson2MapperCustomizerFactory>> classes = FileAndClasspathUtils.scan(basePackage,
-            new FileAndClasspathUtils.AssignableFilter(Jackson2MapperCustomizerFactory.class, false, false));
+        final Set<Class<Jackson2MapperCustomizerFactory>> classes = ClassUtils.FileAndClasspathUtils.scan(basePackage,
+            new ClassUtils.FileAndClasspathUtils.AssignableFilter(Jackson2MapperCustomizerFactory.class, false, false));
 
         log.info("found {} jackson2MapperCustomizerFactories.", classes.size());
 

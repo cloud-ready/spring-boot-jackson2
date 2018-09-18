@@ -29,9 +29,20 @@ public interface Jackson2BuilderCustomizer extends Ordered {
         }
     }
 
-
     default Boolean isXmlMapper(final Jackson2ObjectMapperBuilder builder) {
         return this.createXmlMapper(builder);
+    }
+
+    default ClassLoader moduleClassLoader(final Jackson2ObjectMapperBuilder builder) {
+        try {
+            final ClassLoader result;
+            final Field fieldModuleClassLoader = builder.getClass().getDeclaredField("moduleClassLoader");
+            fieldModuleClassLoader.setAccessible(true);
+            result = (ClassLoader) fieldModuleClassLoader.get(builder);
+            return result;
+        } catch (final NoSuchFieldException | IllegalAccessException | IllegalArgumentException ex) {
+            return builder.getClass().getClassLoader();
+        }
     }
 
     @SuppressWarnings("unchecked")

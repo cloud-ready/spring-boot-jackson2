@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -16,6 +17,7 @@ import org.springframework.util.ClassUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -25,6 +27,7 @@ import java.util.TimeZone;
  */
 public class DefaultJackson2Customizer implements Jackson2Customizer {
 
+    @SuppressWarnings("unchecked")
     @Override
     public void customize(final Jackson2Properties properties, final ObjectMapper mapper) {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
@@ -43,8 +46,9 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
             this.feature(properties, JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, TRUE));
 
         // see: https://github.com/FasterXML/jackson-databind/issues/1218
-        mapper.configure(MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES,
-            this.feature(properties, MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES, FALSE));
+        // since jackson2 2.9.x
+        //mapper.configure(MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES,
+        //    this.feature(properties, MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES, FALSE));
 
         mapper.configure(SerializationFeature.INDENT_OUTPUT,
             this.feature(properties, SerializationFeature.INDENT_OUTPUT, FALSE));
@@ -58,8 +62,21 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
 
         // Jackson2ObjectMapperBuilder.registerWellKnownModulesIfAvailable
         new Jackson2ObjectMapperBuilder().configure(mapper);
+
+        final ClassLoader moduleClassLoader = getClass().getClassLoader();
+        if (isGuavaPresent(moduleClassLoader)) {
+            try {
+                final Class<? extends Module> guavaModuleClass = (Class<? extends Module>)
+                    ClassUtils.forName("com.fasterxml.jackson.datatype.guava.GuavaModule", moduleClassLoader);
+                final Module guavaModule = BeanUtils.instantiateClass(guavaModuleClass);
+                mapper.registerModule(guavaModule);
+            } catch (final ClassNotFoundException ex) {
+                // jackson-datatype-guava or guava not available
+            }
+        }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void customize(final Jackson2Properties properties, final Jackson2ObjectMapperBuilder builder) {
         this.feature(builder, DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
@@ -78,8 +95,9 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
             this.feature(properties, JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, TRUE));
 
         // see: https://github.com/FasterXML/jackson-databind/issues/1218
-        this.feature(builder, MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES,
-            this.feature(properties, MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES, FALSE));
+        // since jackson2 2.9.x
+        //this.feature(builder, MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES,
+        //    this.feature(properties, MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES, FALSE));
 
         this.feature(builder, SerializationFeature.INDENT_OUTPUT,
             this.feature(properties, SerializationFeature.INDENT_OUTPUT, FALSE));
@@ -90,6 +108,25 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
 
         builder.timeZone(this.timeZone(properties));
         properties.setDateFormat(this.dateFormat(properties));
+
+        final ClassLoader moduleClassLoader = this.moduleClassLoader(builder);
+        if (isGuavaPresent(moduleClassLoader)) {
+            try {
+                final Class<? extends Module> guavaModuleClass = (Class<? extends Module>)
+                    ClassUtils.forName("com.fasterxml.jackson.datatype.guava.GuavaModule", moduleClassLoader);
+                final Module guavaModule = BeanUtils.instantiateClass(guavaModuleClass);
+                final List<Module> modules = this.modules(builder);
+                modules.add(guavaModule);
+                builder.modulesToInstall(modules.toArray(new Module[0]));
+            } catch (final ClassNotFoundException ex) {
+                // jackson-datatype-guava or guava not available
+            }
+        }
+    }
+
+    private boolean isGuavaPresent(final ClassLoader classLoader) {
+        return ClassUtils.isPresent("com.google.common.collect.Multimap", classLoader)
+            && ClassUtils.isPresent("com.fasterxml.jackson.datatype.guava.GuavaModule", classLoader);
     }
 
     private void configureDateFormat(final Jackson2Properties properties, final ObjectMapper mapper) {
