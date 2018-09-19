@@ -39,7 +39,7 @@ public class HalJackson2Customizer implements Jackson2Customizer {
         }
     }
 
-    Boolean isAlreadyRegisteredIn(final ObjectMapper mapper, final Class<?> jackson2HalModuleClass) {
+    public Boolean isAlreadyRegisteredIn(final ObjectMapper mapper, final Class<?> jackson2HalModuleClass) {
         try {
             final Boolean result;
             final Method methodIsAlreadyRegisteredIn = jackson2HalModuleClass.getDeclaredMethod(
@@ -52,7 +52,7 @@ public class HalJackson2Customizer implements Jackson2Customizer {
         }
     }
 
-    Optional<Module> jackson2HalModule() {
+    public Optional<Module> jackson2HalModule() {
         try {
             final Optional<Class<?>> moduleClass = ClassUtils.forName(HalJackson2MapperCustomizerFactory.CLASS_JACKSON2_HAL_MODULE);
             final Object jackson2HalModule;

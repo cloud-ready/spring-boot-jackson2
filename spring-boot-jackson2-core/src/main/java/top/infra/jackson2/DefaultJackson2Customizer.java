@@ -124,11 +124,15 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
         }
     }
 
-    private boolean isGuavaPresent(final ClassLoader classLoader) {
+    public boolean isGuavaPresent(final ClassLoader classLoader) {
         return ClassUtils.isPresent("com.google.common.collect.Multimap", classLoader)
             && ClassUtils.isPresent("com.fasterxml.jackson.datatype.guava.GuavaModule", classLoader);
     }
 
+    /**
+     * see: {@link org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration}
+     * Jackson2ObjectMapperBuilderCustomizerConfiguration#configureDateFormat
+     */
     private void configureDateFormat(final Jackson2Properties properties, final ObjectMapper mapper) {
         // We support a fully qualified class name extending DateFormat or a date
         // pattern string value
@@ -162,23 +166,23 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
         }
     }
 
-    private Boolean feature(final Jackson2Properties properties, final DeserializationFeature feature, final Boolean defaultValue) {
+    Boolean feature(final Jackson2Properties properties, final DeserializationFeature feature, final Boolean defaultValue) {
         return properties.getDeserialization().getOrDefault(feature, defaultValue);
     }
 
-    private Boolean feature(final Jackson2Properties properties, final JsonGenerator.Feature feature, final Boolean defaultValue) {
+    Boolean feature(final Jackson2Properties properties, final JsonGenerator.Feature feature, final Boolean defaultValue) {
         return properties.getGenerator().getOrDefault(feature, defaultValue);
     }
 
-    private Boolean feature(final Jackson2Properties properties, final JsonParser.Feature feature, final Boolean defaultValue) {
+    Boolean feature(final Jackson2Properties properties, final JsonParser.Feature feature, final Boolean defaultValue) {
         return properties.getParser().getOrDefault(feature, defaultValue);
     }
 
-    private Boolean feature(final Jackson2Properties properties, final MapperFeature feature, final Boolean defaultValue) {
+    Boolean feature(final Jackson2Properties properties, final MapperFeature feature, final Boolean defaultValue) {
         return properties.getMapper().getOrDefault(feature, defaultValue);
     }
 
-    private Boolean feature(final Jackson2Properties properties, final SerializationFeature feature, final Boolean defaultValue) {
+    Boolean feature(final Jackson2Properties properties, final SerializationFeature feature, final Boolean defaultValue) {
         return properties.getSerialization().getOrDefault(feature, defaultValue);
     }
 }

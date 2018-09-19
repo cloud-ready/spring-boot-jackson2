@@ -48,7 +48,7 @@ public class JodaTimeJackson2Customizer implements Jackson2Customizer {
         return module;
     }
 
-    private JacksonJodaDateFormat getJacksonJodaDateFormat(final Jackson2Properties properties) {
+    JacksonJodaDateFormat getJacksonJodaDateFormat(final Jackson2Properties properties) {
         if (properties.getJodaDateTimeFormat() != null) {
             return new JacksonJodaDateFormat(DateTimeFormat.forPattern(properties.getJodaDateTimeFormat()).withZoneUTC());
         }

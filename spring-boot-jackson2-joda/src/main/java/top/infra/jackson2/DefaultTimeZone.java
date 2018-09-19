@@ -28,6 +28,7 @@ public abstract class DefaultTimeZone {
      * with the Joda's DateTimeFormat (yyyy-MM-dd'T'HH:mm:ss.SSSZZ)
      */
     public static final String PATTERN_JAVA_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    //public static final String PATTERN_JODA_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String PATTERN_JODA_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZZ";
 
     public static final DateTimeFormatter yyyyMMdd_HHmmss;
