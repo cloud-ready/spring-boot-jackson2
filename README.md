@@ -1,6 +1,6 @@
 # spring-boot-jackson2
 
-[Sonar](https://sonarcloud.io/api/project_badges/measure?project=top.infra%3Aspring-boot-jackson2&metric=alert_status)  
+[![Sonar](https://sonarcloud.io/api/project_badges/measure?project=top.infra%3Aspring-boot-jackson2&metric=alert_status)](https://sonarcloud.io/dashboard?id=top.infra%3Aspring-boot-jackson2)  
 [Maven Site (release)](https://cloud-ready.github.io/cloud-ready/release/build-docker/cloud-ready-parent/spring-boot-jackson2/index.html)  
 [Maven Site (snapshot)](https://cloud-ready.github.io/cloud-ready/snapshot/build-docker/cloud-ready-parent/spring-boot-jackson2/index.html)  
 [Artifacts (release)](https://oss.sonatype.org/content/repositories/releases/top/infra/spring-boot-jackson2/)  
