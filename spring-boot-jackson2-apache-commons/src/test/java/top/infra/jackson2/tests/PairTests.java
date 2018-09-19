@@ -34,6 +34,16 @@ public class PairTests {
     @Autowired
     private ObjectMapper springObjectMapper;
 
+    private static Pair<PairKey, PairValue> newImmutablePair() {
+        final PairKey pairKey = new PairKey();
+        pairKey.setName("key");
+        pairKey.setDesc("pair key");
+        final PairValue pairValue = new PairValue();
+        pairValue.setValue("value");
+
+        return new ImmutablePair<>(pairKey, pairValue);
+    }
+
     @Before
     public void setUp() {
         this.customObjectMapper = Jackson2Utils.customize(this.jackson2Properties, new ObjectMapper());
@@ -124,16 +134,6 @@ public class PairTests {
         final Entity entityDeserialized = this.springObjectMapper.readValue(entitySerialized, Entity.class);
         log.info("entityDeserialized springObjectMapper: {}", entityDeserialized);
         assertEquals(entity, entityDeserialized);
-    }
-
-    private static Pair<PairKey, PairValue> newImmutablePair() {
-        final PairKey pairKey = new PairKey();
-        pairKey.setName("key");
-        pairKey.setDesc("pair key");
-        final PairValue pairValue = new PairValue();
-        pairValue.setValue("value");
-
-        return new ImmutablePair<>(pairKey, pairValue);
     }
 
     @Data

@@ -14,9 +14,8 @@ import java.util.Collection;
 @Slf4j
 public class ExcludeClassesClassLoader extends URLClassLoader {
 
-    private Collection<String> excludes;
-
     private final ClassLoader parentClassLoader;
+    private Collection<String> excludes;
 
     public ExcludeClassesClassLoader(
         final ClassLoader parentClassLoader, final URL[] urls, final Collection<String> excludes) {

@@ -13,16 +13,16 @@ public class ResultFieldsMap<Source, Input, Output> implements Serializable {
 
     private Map<Source, ResultFields<Output>> resultFields = new HashMap<>();
 
+    public ResultFieldsMap(final Input input) {
+        this.input = input;
+    }
+
     public void put(final Source source, final ResultFields<Output> result) {
         this.resultFields.put(source, result);
     }
 
     public ResultFields<Output> get(final Source source) {
         return this.resultFields.get(source);
-    }
-
-    public ResultFieldsMap(final Input input) {
-        this.input = input;
     }
 
     public ResultFields<Output> getFirst() {

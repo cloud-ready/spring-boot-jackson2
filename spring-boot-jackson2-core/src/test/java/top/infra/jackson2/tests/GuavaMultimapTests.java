@@ -37,17 +37,6 @@ public class GuavaMultimapTests {
         this.rawObjectMapper = new ObjectMapper();
     }
 
-    @Data
-    public static class MapKey {
-        private String name;
-        private String desc;
-    }
-
-    @Data
-    public static class MapValue {
-        private String value;
-    }
-
     @Test
     @SneakyThrows
     public void testMultimapSerialize() {
@@ -66,5 +55,16 @@ public class GuavaMultimapTests {
         log.info("multimap customObjectMapper: {}", this.customObjectMapper.writeValueAsString(multimap));
         log.info("multimap rawObjectMapper: {}", this.rawObjectMapper.writeValueAsString(multimap));
         log.info("multimap springObjectMapper: {}", this.springObjectMapper.writeValueAsString(multimap));
+    }
+
+    @Data
+    public static class MapKey {
+        private String name;
+        private String desc;
+    }
+
+    @Data
+    public static class MapValue {
+        private String value;
     }
 }

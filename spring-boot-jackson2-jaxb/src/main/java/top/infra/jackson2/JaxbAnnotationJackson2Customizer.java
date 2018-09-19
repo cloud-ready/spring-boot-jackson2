@@ -64,9 +64,9 @@ public class JaxbAnnotationJackson2Customizer implements Jackson2Customizer {
         try {
             final Optional<Module> module;
             final Optional<Class<?>> moduleClass = ClassUtils.forName(CLASS_JAXB_ANNOTATION_MODULE);
-            final Class<?> introspectorClass = ClassUtils.forName(CLASS_JAXB_ANNOTATION_INTROSPECTOR).get();
-            if (moduleClass.isPresent()) {
-                module = Optional.of((Module) moduleClass.get().getConstructor(introspectorClass) //
+            final Optional<Class<?>> introspectorClass = ClassUtils.forName(CLASS_JAXB_ANNOTATION_INTROSPECTOR);
+            if (moduleClass.isPresent() && introspectorClass.isPresent()) {
+                module = Optional.of((Module) moduleClass.get().getConstructor(introspectorClass.get()) //
                     .newInstance(new HackedJackson2JaxbAnnotationIntrospector()));
             } else {
                 module = Optional.empty();

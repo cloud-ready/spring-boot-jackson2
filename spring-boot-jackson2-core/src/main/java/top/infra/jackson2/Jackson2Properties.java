@@ -89,13 +89,12 @@ public class Jackson2Properties {
      * Locale used for formatting.
      */
     private Locale locale;
+    @NestedConfigurationProperty
+    private Jaxb jaxb = new Jaxb();
 
     @Data
     public static class Jaxb {
 
         private Boolean enabled = FALSE;
     }
-
-    @NestedConfigurationProperty
-    private Jaxb jaxb = new Jaxb();
 }

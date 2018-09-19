@@ -8,6 +8,9 @@ import java.util.List;
 @Data
 public class Output implements Serializable {
 
+    private String inputName;
+    private List<OutputDetail> details;
+
     @Data
     public static class OutputDetail implements Serializable {
 
@@ -15,8 +18,4 @@ public class Output implements Serializable {
 
         private String field2;
     }
-
-    private String inputName;
-
-    private List<OutputDetail> details;
 }

@@ -16,15 +16,6 @@ public class LibrarySetClassLoader extends URLClassLoader {
         this.classLoader = classLoader;
     }
 
-    @Override
-    public Class<?> loadClass(final String name) throws ClassNotFoundException {
-        try {
-            return super.loadClass(name);
-        } catch (final ClassNotFoundException e) {
-            return this.classLoader.loadClass(name);
-        }
-    }
-
     public static URL[] toUrls(final String[] libraries) throws IOException {
         return Arrays.stream(libraries).map((s) -> {
             try {
@@ -36,5 +27,14 @@ public class LibrarySetClassLoader extends URLClassLoader {
                 throw new RuntimeException(e);
             }
         }).toArray(URL[]::new);
+    }
+
+    @Override
+    public Class<?> loadClass(final String name) throws ClassNotFoundException {
+        try {
+            return super.loadClass(name);
+        } catch (final ClassNotFoundException e) {
+            return this.classLoader.loadClass(name);
+        }
     }
 }

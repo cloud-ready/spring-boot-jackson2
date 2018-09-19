@@ -26,14 +26,6 @@ import top.infra.test.classloader.exclude.ExcludeClasses;
 @Slf4j
 public class ExcludeClassJunitRunnerTest {
 
-    @SpringBootApplication
-    public static class ExcludeClassJunitRunnerTestApplication {
-
-        public static void main(final String... args) {
-            new SpringApplicationBuilder(ExcludeClassJunitRunnerTestApplication.class).web(true).run(args);
-        }
-    }
-
     @Test(expected = NoClassDefFoundError.class)
     public void testExcludeClassesInTest() throws Exception {
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
@@ -45,5 +37,13 @@ public class ExcludeClassJunitRunnerTest {
         ClassUtils.printClassLoader(GuavaAndCommonUser.class);
 
         assertEquals("AA", top.infra.test.GuavaAndCommonUser.toUpperCase("aA"));
+    }
+
+    @SpringBootApplication
+    public static class ExcludeClassJunitRunnerTestApplication {
+
+        public static void main(final String... args) {
+            new SpringApplicationBuilder(ExcludeClassJunitRunnerTestApplication.class).web(true).run(args);
+        }
     }
 }

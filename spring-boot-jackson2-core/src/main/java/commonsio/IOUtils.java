@@ -43,7 +43,7 @@ public class IOUtils {
      * This method buffers the input internally, so there is no need to use a
      * <code>BufferedInputStream</code>.
      *
-     * @param input the <code>InputStream</code> to read from, not null
+     * @param input    the <code>InputStream</code> to read from, not null
      * @param encoding the encoding to use, null means platform default
      * @return the list of Strings, never null
      * @throws NullPointerException if the input is null
@@ -65,7 +65,7 @@ public class IOUtils {
      * This method buffers the input internally, so there is no need to use a
      * <code>BufferedInputStream</code>.
      *
-     * @param input the <code>InputStream</code> to read from, not null
+     * @param input    the <code>InputStream</code> to read from, not null
      * @param encoding the encoding to use, null means platform default
      * @return the list of Strings, never null
      * @throws NullPointerException                         if the input is null
@@ -119,8 +119,7 @@ public class IOUtils {
     /**
      * Returns the given Charset or the default Charset if the given Charset is null.
      *
-     * @param charset
-     *            A charset or null.
+     * @param charset A charset or null.
      * @return the given Charset or the default Charset if the given Charset is null
      */
     public static Charset toCharset(final Charset charset) {
@@ -130,11 +129,9 @@ public class IOUtils {
     /**
      * Returns a Charset for the named charset. If the name is null, return the default Charset.
      *
-     * @param charset
-     *            The name of the requested charset, may be null.
+     * @param charset The name of the requested charset, may be null.
      * @return a Charset for the named charset
-     * @throws java.nio.charset.UnsupportedCharsetException
-     *             If the named charset is unavailable
+     * @throws java.nio.charset.UnsupportedCharsetException If the named charset is unavailable
      */
     public static Charset toCharset(final String charset) {
         return charset == null ? Charset.defaultCharset() : Charset.forName(charset);

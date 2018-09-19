@@ -35,17 +35,6 @@ public class PairSerializer extends StdSerializer<Pair<?, ?>> implements Context
     protected final boolean _staticTyping;
 
     protected final JavaType _entryType, _keyType, _valueType;
-
-    /**
-     * Key serializer to use, if it can be statically determined
-     */
-    protected JsonSerializer<Object> _ks;
-
-    /**
-     * Value serializer to use, if it can be statically determined
-     */
-    protected JsonSerializer<Object> _vs;
-
     /**
      * keyTypeSerializer, Type identifier serializer used for keys, if any.
      */
@@ -54,7 +43,14 @@ public class PairSerializer extends StdSerializer<Pair<?, ?>> implements Context
      * valueTypeSerializer, Type identifier serializer used for values, if any.
      */
     protected final TypeSerializer _vts;
-
+    /**
+     * Key serializer to use, if it can be statically determined
+     */
+    protected JsonSerializer<Object> _ks;
+    /**
+     * Value serializer to use, if it can be statically determined
+     */
+    protected JsonSerializer<Object> _vs;
     /**
      * dynamicKeySerializers, If key type can not be statically determined, mapping from
      * runtime key types to serializers are stored in this object.
