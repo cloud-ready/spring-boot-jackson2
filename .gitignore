@@ -23,6 +23,7 @@ git.properties
 /*.tar.gz
 /*.zip
 
+snapshot
 **/src/site/markdown/README.md
 **/src/site/markdown/src/readme
 **/src/site/resources

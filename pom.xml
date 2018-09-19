@@ -50,6 +50,81 @@
         <module>spring-boot-jackson2-tests</module>
     </modules>
 
+    <profiles>
+        <!-- @formatter:off -->
+        <profile>
+            <id>report-aggregate</id>
+            <activation><property><name>site</name><value>true</value></property></activation>
+            <modules>
+                <module>report-aggregate</module>
+                <module>spring-boot-jackson2-all</module>
+                <module>spring-boot-jackson2-apache-commons</module>
+                <module>spring-boot-jackson2-core</module>
+                <module>spring-boot-jackson2-hal</module>
+                <module>spring-boot-jackson2-jaxb</module>
+                <module>spring-boot-jackson2-joda</module>
+                <module>spring-boot-jackson2-tests</module>
+            </modules>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <id>aggregate</id>
+                                <inherited>false</inherited>
+                                <reports><report>checkstyle-aggregate</report></reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <id>aggregate</id>
+                                <inherited>false</inherited>
+                                <reports><report>aggregate</report></reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <configuration><aggregate>true</aggregate></configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-report-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <id>unit-tests</id>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                                <inherited>false</inherited>
+                                <reports><report>report-only</report></reports>
+                            </reportSet>
+                            <reportSet>
+                                <id>integration-tests</id>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                                <inherited>false</inherited>
+                                <reports><report>failsafe-report-only</report></reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>taglist-maven-plugin</artifactId>
+                        <configuration>
+                            <aggregate>true</aggregate>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </reporting>
+        </profile>
+        <!-- @formatter:on -->
+    </profiles>
+
     <properties>
     </properties>
 </project>

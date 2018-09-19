@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>report-aggregate</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <parent>
+        <artifactId>spring-boot-jackson2</artifactId>
+        <groupId>top.infra</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>../spring-boot-jackson2-all/src/main/java</source>
+                                <source>../spring-boot-jackson2-apache-commons/src/main/java</source>
+                                <source>../spring-boot-jackson2-core/src/main/java</source>
+                                <source>../spring-boot-jackson2-hal/src/main/java</source>
+                                <source>../spring-boot-jackson2-jaxb/src/main/java</source>
+                                <source>../spring-boot-jackson2-joda/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- @formatter:off -->
+    <dependencies>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-all</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-apache-commons</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-core</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-hal</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-jaxb</artifactId></dependency>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-joda</artifactId></dependency>
+    </dependencies>
+    <!-- @formatter:on -->
+
+    <profiles>
+        <!-- @formatter:off -->
+        <profile>
+            <id>jacoco-report-aggregate</id>
+            <activation><property><name>jacoco</name><value>true</value></property></activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!--
+                        jacoco-maven-plugin: aggregated report empty with separate aggregation and inheritance pom
+                        see: https://groups.google.com/forum/#!topic/jacoco/FpdLbxsXSTY
+                        -->
+                        <groupId>org.jacoco</groupId><artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>report-aggregate</id>
+                                <phase>prepare-package</phase>
+                                <inherited>false</inherited>
+                                <goals>
+                                    <goal>report-aggregate</goal>
+                                </goals>
+                                <configuration>
+                                    <title>JaCoCo ${project.artifactId}</title>
+                                    <footer>Code Coverage Report for ${project.artifactId} ${project.version}</footer>
+                                    <includes>
+                                        <!-- Analyze class files only to exclude shaded JAR from report -->
+                                        <include>**/*.class</include>
+                                    </includes>
+                                    <excludes>
+                                        <!--<exclude>**/X.class</exclude>-->
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- @formatter:on -->
+    </profiles>
+
+    <properties>
+    </properties>
+</project>
