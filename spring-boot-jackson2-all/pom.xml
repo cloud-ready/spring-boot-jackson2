@@ -13,6 +13,7 @@
 
     <!-- @formatter:off -->
     <dependencies>
+        <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-apache-commons</artifactId></dependency>
         <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-core</artifactId></dependency>
         <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-hal</artifactId></dependency>
         <dependency><groupId>top.infra</groupId><artifactId>spring-boot-jackson2-jaxb</artifactId></dependency>
