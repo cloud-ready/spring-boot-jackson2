@@ -195,44 +195,20 @@ public class PairDeserializer extends StdDeserializer<Pair<Object, Object>> impl
             return (Pair<Object, Object>) ctxt.handleUnexpectedToken(handledType(), p);
         }
 
-        final JsonDeserializer<Object> keyDes = this._keyDeserializer;
-        final TypeDeserializer keyTypeDeser = this._keyTypeDeserializer;
-        final JsonDeserializer<Object> valueDes = this._valueDeserializer;
-        final TypeDeserializer valueTypeDeser = this._valueTypeDeserializer;
-
-        final String keyStr = p.getCurrentName();
         Object key = null;
-        //Object key = keyDes.deserializeKey(keyStr, ctxt);
-        t = p.nextToken();
-        try {
-            // Note: must handle null explicitly here; value deserializers won't
-            if (t == JsonToken.VALUE_NULL) {
-                key = keyDes.getNullValue(ctxt);
-            } else if (valueTypeDeser == null) {
-                key = keyDes.deserialize(p, ctxt);
-            } else {
-                key = keyDes.deserializeWithType(p, ctxt, keyTypeDeser);
-            }
-        } catch (Exception e) {
-            wrapAndThrow(e, Pair.class, keyStr);
-        }
-
-        t = p.nextToken();
-        final String valueStr = p.getCurrentName();
         Object value = null;
-        // And then the value...
+        Pair<String, Object> field = this.deserializeField(p, ctxt);
+        if ("left".equals(field.getKey())) {
+            key = field.getRight();
+        } else {
+            value = field.getRight();
+        }
         t = p.nextToken();
-        try {
-            // Note: must handle null explicitly here; value deserializers won't
-            if (t == JsonToken.VALUE_NULL) {
-                value = valueDes.getNullValue(ctxt);
-            } else if (valueTypeDeser == null) {
-                value = valueDes.deserialize(p, ctxt);
-            } else {
-                value = valueDes.deserializeWithType(p, ctxt, valueTypeDeser);
-            }
-        } catch (Exception e) {
-            wrapAndThrow(e, Pair.class, valueStr);
+        field = this.deserializeField(p, ctxt);
+        if ("left".equals(field.getKey())) {
+            key = field.getRight();
+        } else {
+            value = field.getRight();
         }
 
         // Close, but also verify that we reached the END_OBJECT
@@ -247,6 +223,50 @@ public class PairDeserializer extends StdDeserializer<Pair<Object, Object>> impl
             return null;
         }
         return new ImmutablePair<>(key, value);
+    }
+
+    private Pair<String, Object> deserializeField(
+        final JsonParser p,
+        final DeserializationContext ctxt
+    ) throws IOException {
+        final String fieldName = p.getCurrentName();
+        Object fieldValue = null;
+        if ("left".equals(fieldName)) {
+            final JsonDeserializer<Object> keyDes = this._keyDeserializer;
+            final TypeDeserializer keyTypeDeser = this._keyTypeDeserializer;
+            fieldValue = this.deserializeField(p, ctxt, fieldName, keyDes, keyTypeDeser);
+        } else if ("right".equals(fieldName)) {
+            final JsonDeserializer<Object> valueDes = this._valueDeserializer;
+            final TypeDeserializer valueTypeDeser = this._valueTypeDeserializer;
+            fieldValue = this.deserializeField(p, ctxt, fieldName, valueDes, valueTypeDeser);
+        } else {
+            ctxt.reportMappingException("Problem binding JSON into Pair: unknown field " + fieldName + ".");
+        }
+        return new ImmutablePair<>(fieldName, fieldValue);
+    }
+
+    private Object deserializeField(
+        final JsonParser p,
+        final DeserializationContext ctxt,
+        final String fieldName,
+        final JsonDeserializer<Object> des,
+        final TypeDeserializer typeDeser
+    ) throws IOException {
+        Object fieldValue = null;
+        JsonToken t = p.nextToken();
+        try {
+            // Note: must handle null explicitly here; value deserializers won't
+            if (t == JsonToken.VALUE_NULL) {
+                fieldValue = des.getNullValue(ctxt);
+            } else if (typeDeser == null) {
+                fieldValue = des.deserialize(p, ctxt);
+            } else {
+                fieldValue = des.deserializeWithType(p, ctxt, typeDeser);
+            }
+        } catch (final Exception ex) {
+            wrapAndThrow(ex, Pair.class, fieldName);
+        }
+        return fieldValue;
     }
 
     @Override

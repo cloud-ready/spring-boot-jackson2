@@ -51,21 +51,37 @@ public class PairTests {
         assertEquals(this.springObjectMapper.writeValueAsString(pair), this.customObjectMapper.writeValueAsString(pair));
         assertNotEquals(this.springObjectMapper.writeValueAsString(pair), this.rawObjectMapper.writeValueAsString(pair));
 
-        final String serialized = this.springObjectMapper.writeValueAsString(pair);
-        final Pair<PairKey, PairValue> deserialized = this.springObjectMapper.readValue(
-            serialized,
-            new TypeReference<Pair<PairKey, PairValue>>() {
-            }
-        );
-        log.info("deserialized springObjectMapper: {}", deserialized);
-        assertEquals(pair, deserialized);
+        final String pairSerialized = this.springObjectMapper.writeValueAsString(pair);
+        final TypeReference<Pair<PairKey, PairValue>> pairTypeReference = new TypeReference<Pair<PairKey, PairValue>>() {
+        };
+        final Pair<PairKey, PairValue> pairDeserialized = this.springObjectMapper.readValue(pairSerialized, pairTypeReference);
+        log.info("pairDeserialized springObjectMapper: {}", pairDeserialized);
+        assertEquals(pair, pairDeserialized);
+
+        final String rightFirstJsonString = "{\"right\":{\"value\":\"value\"},\"left\":{\"name\":\"key\",\"desc\":\"pair key\"}}";
+        final Pair<PairKey, PairValue> rightFirstDeserialized = this.springObjectMapper.readValue(rightFirstJsonString, pairTypeReference);
+        assertEquals(pair, rightFirstDeserialized);
 
         final Pair<PairKey, PairValue> pairNullKey = new ImmutablePair<>(null, pair.getValue());
         log.info("pairNullKey springObjectMapper: {}", this.springObjectMapper.writeValueAsString(pairNullKey));
+        final String pairNullKeySerialized = this.springObjectMapper.writeValueAsString(pairNullKey);
+        final Pair<PairKey, PairValue> pairNullKeyDeserialized = this.springObjectMapper.readValue(
+            pairNullKeySerialized, pairTypeReference);
+        assertEquals(pairNullKey, pairNullKeyDeserialized);
+
         final Pair<PairKey, PairValue> pairNullValue = new ImmutablePair<>(pair.getKey(), null);
         log.info("pairNullValue springObjectMapper: {}", this.springObjectMapper.writeValueAsString(pairNullValue));
+        final String pairNullValueSerialized = this.springObjectMapper.writeValueAsString(pairNullValue);
+        final Pair<PairKey, PairValue> pairNullValueDeserialized = this.springObjectMapper.readValue(
+            pairNullValueSerialized, pairTypeReference);
+        assertEquals(pairNullValue, pairNullValueDeserialized);
+
         final Pair<PairKey, PairValue> pairNull = new ImmutablePair<>(null, null);
         log.info("pairNull springObjectMapper: {}", this.springObjectMapper.writeValueAsString(pairNull));
+        final String pairNullSerialized = this.springObjectMapper.writeValueAsString(pairNull);
+        final Pair<PairKey, PairValue> pairNullDeserialized = this.springObjectMapper.readValue(
+            pairNullSerialized, pairTypeReference);
+        assertEquals(pairNull, pairNullDeserialized);
     }
 
     @Test
@@ -79,6 +95,15 @@ public class PairTests {
         log.info("nestedPair springObjectMapper: {}", this.springObjectMapper.writeValueAsString(nestedPair));
         assertEquals(this.springObjectMapper.writeValueAsString(pair), this.customObjectMapper.writeValueAsString(pair));
         assertNotEquals(this.springObjectMapper.writeValueAsString(pair), this.rawObjectMapper.writeValueAsString(pair));
+
+        final String nestedPairSerialized = this.springObjectMapper.writeValueAsString(nestedPair);
+        final Pair<PairKey, Pair<PairKey, PairValue>> nestedPairDeserialized = this.springObjectMapper.readValue(
+            nestedPairSerialized,
+            new TypeReference<Pair<PairKey, Pair<PairKey, PairValue>>>() {
+            }
+        );
+        log.info("nestedPairDeserialized springObjectMapper: {}", nestedPairDeserialized);
+        assertEquals(nestedPair, nestedPairDeserialized);
     }
 
     @Test
@@ -94,6 +119,11 @@ public class PairTests {
         log.info("entity springObjectMapper: {}", this.springObjectMapper.writeValueAsString(entity));
         assertEquals(this.springObjectMapper.writeValueAsString(pair), this.customObjectMapper.writeValueAsString(pair));
         assertNotEquals(this.springObjectMapper.writeValueAsString(pair), this.rawObjectMapper.writeValueAsString(pair));
+
+        final String entitySerialized = this.springObjectMapper.writeValueAsString(entity);
+        final Entity entityDeserialized = this.springObjectMapper.readValue(entitySerialized, Entity.class);
+        log.info("entityDeserialized springObjectMapper: {}", entityDeserialized);
+        assertEquals(entity, entityDeserialized);
     }
 
     private static Pair<PairKey, PairValue> newImmutablePair() {
