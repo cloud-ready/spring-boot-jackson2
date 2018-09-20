@@ -6,6 +6,9 @@
             <item href="README.html" name="README"/>
         </menu>
         <menu ref="modules"/>
+        <menu name="aggregated jacoco report">
+            <item href="jacoco-aggregate/index.html" name="JaCoCo"/>
+        </menu>
         <menu ref="reports" inherit="bottom"/>
     </body>
 </project>
