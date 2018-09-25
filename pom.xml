@@ -127,4 +127,18 @@
 
     <properties>
     </properties>
+
+    <!-- @formatter:off -->
+    <repositories>
+        <!-- Make artifacts in OSSRH repositories available -->
+        <repository>
+            <id>OSSRH-releases</id><name>central releases</name><url>https://oss.sonatype.org/content/repositories/releases/</url>
+            <releases><enabled>true</enabled></releases><snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>OSSRH-snapshots</id><name>central snapshots</name><url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled></snapshots>
+        </repository>
+    </repositories>
+    <!-- @formatter:on -->
 </project>
