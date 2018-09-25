@@ -33,9 +33,9 @@
         </menu>
         <menu ref="modules"/>
         <menu name="aggregated reports">
-            <item href="report-aggregate/jacoco-aggregate/index.html" name="aggregated jacoco report"/>
-            <item href="report-aggregate/findbugs.html" name="aggregated findbugs report"/>
-            <item href="report-aggregate/jdepend-report.html" name="aggregated jdepend report"/>
+            <item href="spring-boot-jackson2-report-aggregate/jacoco-aggregate/index.html" name="aggregated jacoco report"/>
+            <item href="spring-boot-jackson2-report-aggregate/findbugs.html" name="aggregated findbugs report"/>
+            <item href="spring-boot-jackson2-report-aggregate/jdepend-report.html" name="aggregated jdepend report"/>
         </menu>
         <!--<menu ref="reports" />-->
         <menu ref="reports" inherit="bottom"/>

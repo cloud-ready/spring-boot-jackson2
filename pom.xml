@@ -8,7 +8,7 @@
     <parent>
         <artifactId>cloud-ready-parent</artifactId>
         <groupId>top.infra</groupId>
-        <version>1.0.2.U2</version>
+        <version>1.0.2.U3</version>
     </parent>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -53,16 +53,16 @@
     <profiles>
         <!-- @formatter:off -->
         <profile>
-            <id>report-aggregate</id>
+            <id>spring-boot-jackson2-report-aggregate</id>
             <activation><property><name>site</name><value>true</value></property></activation>
             <modules>
-                <module>report-aggregate</module>
                 <module>spring-boot-jackson2-all</module>
                 <module>spring-boot-jackson2-apache-commons</module>
                 <module>spring-boot-jackson2-core</module>
                 <module>spring-boot-jackson2-hal</module>
                 <module>spring-boot-jackson2-jaxb</module>
                 <module>spring-boot-jackson2-joda</module>
+                <module>spring-boot-jackson2-report-aggregate</module>
                 <module>spring-boot-jackson2-tests</module>
             </modules>
             <reporting>
