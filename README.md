@@ -1,13 +1,18 @@
 # spring-boot-jackson2
 
-[![Sonar](https://sonarcloud.io/api/project_badges/measure?project=top.infra%3Aspring-boot-jackson2&metric=alert_status)](https://sonarcloud.io/dashboard?id=top.infra%3Aspring-boot-jackson2)  
-[Maven Site (release)](https://cloud-ready.github.io/cloud-ready/release/build-docker/cloud-ready-parent/spring-boot-jackson2/index.html)  
-[Maven Site (snapshot)](https://cloud-ready.github.io/cloud-ready/snapshot/build-docker/cloud-ready-parent/spring-boot-jackson2/index.html)  
+[![Sonar](https://sonarcloud.io/api/project_badges/measure?project=top.infra%3Aspring-boot-jackson2&metric=alert_status)sonarcloud](https://sonarcloud.io/dashboard?id=top.infra%3Aspring-boot-jackson2)  
+
+[Maven Site release (github.io)](https://cloud-ready.github.io/cloud-ready/release/build-docker/cloud-ready-parent/spring-boot-jackson2/index.html)  
+[Maven Site snapshot (infra.top)](https://cloud-ready.github.io/cloud-ready/snapshot/build-docker/cloud-ready-parent/spring-boot-jackson2/index.html)  
+
 [Artifacts (release)](https://oss.sonatype.org/content/repositories/releases/top/infra/spring-boot-jackson2/)  
 [Artifacts (snapshot)](https://oss.sonatype.org/content/repositories/snapshots/top/infra/spring-boot-jackson2/)  
-[Source Repository](https://github.com/cloud-ready/spring-boot-jackson2/tree/develop)  
-[CI](https://travis-ci.org/cloud-ready/spring-boot-jackson2)  
-[![Build Status](https://travis-ci.org/cloud-ready/spring-boot-jackson2.svg?branch=develop)](https://travis-ci.org/cloud-ready/spring-boot-jackson2)  
+
+[Source Repository (github)](https://github.com/cloud-ready/spring-boot-jackson2/tree/develop)  
+[Source Repository (gitlab)](https://gitlab.com/gitlab-cloud-ready/spring-boot-jackson2/tree/develop)  
+
+[![pipeline status](https://gitlab.com/gitlab-cloud-ready/spring-boot-jackson2/badges/develop/pipeline.svg)gitlab-ci](https://gitlab.com/gitlab-cloud-ready/spring-boot-jackson2/pipelines)  
+[![Build Status](https://travis-ci.org/cloud-ready/spring-boot-jackson2.svg?branch=develop)travis-ci](https://travis-ci.org/cloud-ready/spring-boot-jackson2)  
 
 
 spring-boot-jackson2
