@@ -1,9 +1,12 @@
 package top.infra.jackson2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -32,5 +35,29 @@ public class Jackson2AutoConfiguration {
         final Jackson2Properties properties
     ) {
         return new DefaultJackson2ObjectMapperBuilderCustomizer(customizers, properties);
+    }
+
+    @Configuration
+    @ConditionalOnJava(ConditionalOnJava.JavaVersion.EIGHT)
+    @ConditionalOnClass(JavaTimeModule.class)
+    static class JavaTimeModuleConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean(JavaTimeModuleCustomizer.class)
+        public JavaTimeModuleCustomizer javaTimeModuleCustomizer() {
+            return new JavaTimeModuleCustomizer();
+        }
+    }
+
+    @Configuration
+    @ConditionalOnJava(ConditionalOnJava.JavaVersion.EIGHT)
+    @ConditionalOnClass(Jdk8Module.class)
+    static class Jdk8ModuleConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean(Jdk8ModuleCustomizer.class)
+        public Jdk8ModuleCustomizer javaTimeModuleCustomizer() {
+            return new Jdk8ModuleCustomizer();
+        }
     }
 }

@@ -53,9 +53,20 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
         mapper.configure(SerializationFeature.INDENT_OUTPUT,
             this.feature(properties, SerializationFeature.INDENT_OUTPUT, FALSE));
 
+        // Enable ISO-8601 For DateTime Serialization
+        // If you want the datetime fields to be serialized as ISO-8601, you need to explicitly set the date format as StdDateFormat
+        // for standard serializers and deserializers.
+        // Therefore, for serialization it defaults to using an ISO-8601 compliant format (format String yyyy-MM-dd'T'HH:mm:ss.SSSZ) and
+        // for deserialization, both ISO-8601 and RFC-1123. You also need to disable the serialization feature WRITE_DATES_AS_TIMESTAMPS,
+        // which serializes the date time to timestamp.
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
             this.feature(properties, SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, FALSE));
         //WRITE_DATES_WITH_ZONE_ID
+
+        // Preserve JSON Timezone After Deserialization
+        // By default, mapper drops timezone during deserialization.
+        // It adjust dates to context’s (web application’s) timezone. If you want to preserve user’s timezone, you can do the following:
+        //mapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
 
         mapper.setTimeZone(this.timeZone(properties));
         this.configureDateFormat(properties, mapper);
@@ -156,6 +167,7 @@ public class DefaultJackson2Customizer implements Jackson2Customizer {
                 mapper.setDateFormat(simpleDateFormat);
             }
         }
+        // else { mapper.setDateFormat(new StdDateFormat()); }
     }
 
     private void feature(final Jackson2ObjectMapperBuilder builder, final Object feature, final Boolean enabled) {
