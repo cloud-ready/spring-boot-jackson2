@@ -59,7 +59,7 @@ public class ExcludeClassesClassLoader extends URLClassLoader {
         }
     }
 
-    public void setExcludes(final Collection<String> excludes) {
+    public synchronized void setExcludes(final Collection<String> excludes) {
         this.excludes = excludes != null ? excludes : ImmutableList.of();
     }
 }

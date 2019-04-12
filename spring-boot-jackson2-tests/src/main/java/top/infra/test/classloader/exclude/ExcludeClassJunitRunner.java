@@ -8,6 +8,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,12 +23,15 @@ public class ExcludeClassJunitRunner extends Suite {
     private static ExcludeClassesClassLoader customClassLoader;
 
     static {
-        currentClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
-        customClassLoader = new ExcludeClassesClassLoader(
-            currentClassLoader,
-            currentClassLoader.getURLs(),
-            null
-        );
+        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            currentClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+            customClassLoader = new ExcludeClassesClassLoader(
+                currentClassLoader,
+                currentClassLoader.getURLs(),
+                null
+            );
+            return null;
+        });
     }
 
     public ExcludeClassJunitRunner(final Class<?> klass) throws InitializationError {

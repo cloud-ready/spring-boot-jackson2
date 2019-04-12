@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
@@ -11,10 +13,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.system.JavaVersion;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @AutoConfigureBefore({JacksonAutoConfiguration.class})
 @ConditionalOnClass({ObjectMapper.class})
@@ -38,7 +39,7 @@ public class Jackson2AutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnJava(ConditionalOnJava.JavaVersion.EIGHT)
+    @ConditionalOnJava(JavaVersion.EIGHT)
     @ConditionalOnClass(JavaTimeModule.class)
     static class JavaTimeModuleConfiguration {
 
@@ -50,13 +51,13 @@ public class Jackson2AutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnJava(ConditionalOnJava.JavaVersion.EIGHT)
+    @ConditionalOnJava(JavaVersion.EIGHT)
     @ConditionalOnClass(Jdk8Module.class)
     static class Jdk8ModuleConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(Jdk8ModuleCustomizer.class)
-        public Jdk8ModuleCustomizer javaTimeModuleCustomizer() {
+        public Jdk8ModuleCustomizer jdk8ModuleCustomizer() {
             return new Jdk8ModuleCustomizer();
         }
     }

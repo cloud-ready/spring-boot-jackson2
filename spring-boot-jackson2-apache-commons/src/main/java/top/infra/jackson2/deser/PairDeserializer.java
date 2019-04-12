@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -39,7 +41,8 @@ public class PairDeserializer extends StdDeserializer<Pair<Object, Object>> impl
      * If key instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _keyTypeDeserializer;
+    @SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
+    protected final transient TypeDeserializer _keyTypeDeserializer;
 
     /**
      * Value deserializer.
@@ -50,7 +53,8 @@ public class PairDeserializer extends StdDeserializer<Pair<Object, Object>> impl
      * If value instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _valueTypeDeserializer;
+    @SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
+    protected final transient TypeDeserializer _valueTypeDeserializer;
 
     /*
     /**********************************************************

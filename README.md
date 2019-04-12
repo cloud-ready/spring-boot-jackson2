@@ -70,3 +70,9 @@ Set up JacksonJodaDateFormat for DateTime of joda-time
 com.fasterxml.jackson.datatype:jackson-datatype-joda
 
 joda-time:joda-time
+
+## Build this project
+
+```bash
+JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home" mvn clean package spotbugs:spotbugs spotbugs:check pmd:pmd pmd:check
+```

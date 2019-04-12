@@ -1,6 +1,7 @@
 package top.infra.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.boot.WebApplicationType.SERVLET;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +44,7 @@ public class ExcludeClassJunitRunnerTest {
     public static class ExcludeClassJunitRunnerTestApplication {
 
         public static void main(final String... args) {
-            new SpringApplicationBuilder(ExcludeClassJunitRunnerTestApplication.class).web(true).run(args);
+            new SpringApplicationBuilder(ExcludeClassJunitRunnerTestApplication.class).web(SERVLET).run(args);
         }
     }
 }
