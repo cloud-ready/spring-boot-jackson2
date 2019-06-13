@@ -5,5 +5,5 @@ see: [stackoverflow aggregate-findbugs-report-in-maven-3-0-5](https://stackoverf
 Generate site
 ```bash
 # site:stage is invalid for github site
-mvn -U -Dgithub-site-publish=false -Dinfrastructure=opensource -Djacoco=true -Dsite=true clean package site site:stage
+mvn -U -Dgithub.site.publish=false -Dinfrastructure=opensource -Djacoco=true -Dsite=true clean package site site:stage
 ```
