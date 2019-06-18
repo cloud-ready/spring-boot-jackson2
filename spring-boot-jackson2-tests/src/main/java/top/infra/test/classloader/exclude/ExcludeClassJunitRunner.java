@@ -1,33 +1,49 @@
 package top.infra.test.classloader.exclude;
 
-import lombok.SneakyThrows;
+import static top.infra.test.classloader.exclude.ExcludeClassesClassLoader.getMethod;
 
-import org.junit.runner.Runner;
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
-
-import java.net.URLClassLoader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.SneakyThrows;
+
+import org.junit.runner.Runner;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.Suite;
+import org.junit.runners.model.InitializationError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import top.infra.test.classloader.ClassLoaderChangerRunner;
 import top.infra.test.classloader.ClassUtils;
 
 public class ExcludeClassJunitRunner extends Suite {
 
-    private static URLClassLoader currentClassLoader;
+    private static final Logger logger = LoggerFactory.getLogger("top.infra.test.classloader.exclude.ExcludeClassJunitRunner");
+
+    private static ClassLoader currentClassLoader;
     private static ExcludeClassesClassLoader customClassLoader;
 
     static {
+        // On java8 this is a java.net.URLClassLoader
+        // On java11 this is a jdk.internal.loader.ClassLoaders$AppClassLoader
+        currentClassLoader = Thread.currentThread().getContextClassLoader();
+        final URL[] urls = getURLs(currentClassLoader);
+        if (logger.isInfoEnabled()) {
+            logger.info("urls: {}", Arrays.toString(urls));
+        }
+
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            currentClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
             customClassLoader = new ExcludeClassesClassLoader(
                 currentClassLoader,
-                currentClassLoader.getURLs(),
+                urls,
                 null
             );
             return null;
@@ -72,5 +88,33 @@ public class ExcludeClassJunitRunner extends Suite {
         final List<Runner> runners = new ArrayList<>();
         runners.add(new ClassLoaderChangerRunner(currentClassLoader, customClassLoader, junit4Runner));
         return runners;
+    }
+
+    private static URL[] getURLs(final ClassLoader classLoader) {
+        if (classLoader instanceof java.net.URLClassLoader) {
+            return ((java.net.URLClassLoader) classLoader).getURLs();
+        } else {
+            final Object ucp = ucp(classLoader);
+            try {
+                final Method method = getMethod(ucp, "getURLs");
+                return (URL[]) method.invoke(ucp);
+            } catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {
+                logger.error("Error invoking method getURLs on ucp", ex);
+                throw new UnsupportedOperationException(ex);
+            }
+        }
+    }
+
+    // sun.misc.URLClassPath on java8
+    // jdk.internal.loader.URLClassPath on java11
+    private static Object ucp(final ClassLoader classLoader) {
+        try {
+            final Field field = classLoader.getClass().getDeclaredField("ucp");
+            field.setAccessible(true);
+            return field.get(classLoader);
+        } catch (final IllegalAccessException | NoSuchFieldException | IllegalArgumentException ex) {
+            logger.error("Error getting field ucp", ex);
+            throw new IllegalArgumentException(ex);
+        }
     }
 }

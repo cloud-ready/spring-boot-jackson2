@@ -74,5 +74,7 @@ joda-time:joda-time
 ## Build this project
 
 ```bash
-JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home" mvn clean package spotbugs:spotbugs spotbugs:check pmd:pmd pmd:check
+time ./mvnw -e -ntp spotbugs:spotbugs spotbugs:check pmd:pmd pmd:check
+time JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home" ./mvnw -e -ntp clean package
+time JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home" ./mvnw -e -ntp -Djava.version=11 clean package
 ```

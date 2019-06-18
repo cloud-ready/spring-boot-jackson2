@@ -1,5 +1,8 @@
 package top.infra.test.classloader.multi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.SneakyThrows;
 
 import org.junit.runner.Runner;
@@ -7,18 +10,16 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
-
 import top.infra.test.classloader.ClassLoaderChangerRunner;
 
 public class MultiClassLoaderJunitRunner extends Suite {
 
-    private static URLClassLoader currentClassLoader;
+    private static ClassLoader currentClassLoader;
 
     static {
-        currentClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        // On java8 this is a java.net.URLClassLoader
+        // On java11 this is a jdk.internal.loader.ClassLoaders$AppClassLoader
+        currentClassLoader = Thread.currentThread().getContextClassLoader();
     }
 
     public MultiClassLoaderJunitRunner(final Class<?> klass) throws InitializationError {

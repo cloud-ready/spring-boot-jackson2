@@ -2,11 +2,11 @@ package top.infra.test.classloader.exclude;
 
 import com.google.common.collect.ImmutableList;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * see: https://medium.com/@davehagler/junit-testrunner-with-a-custom-classloader-337d447dba4f
@@ -18,7 +18,10 @@ public class ExcludeClassesClassLoader extends URLClassLoader {
     private Collection<String> excludes;
 
     public ExcludeClassesClassLoader(
-        final ClassLoader parentClassLoader, final URL[] urls, final Collection<String> excludes) {
+        final ClassLoader parentClassLoader,
+        final URL[] urls,
+        final Collection<String> excludes
+    ) {
 
         super(urls, null);
 
@@ -61,5 +64,35 @@ public class ExcludeClassesClassLoader extends URLClassLoader {
 
     public synchronized void setExcludes(final Collection<String> excludes) {
         this.excludes = excludes != null ? excludes : ImmutableList.of();
+    }
+
+    // @Deprecated
+    // private static Class<?> findLoadedClass(final ClassLoader classLoader, final String name) {
+    //     final java.lang.reflect.Method method = getDeclaredMethod(classLoader, "findLoadedClass", String.class);
+    //     try {
+    //         return (Class<?>) method.invoke(classLoader, name);
+    //     } catch (final NoSuchMethodException | IllegalAccessException | java.lang.reflect.InvocationTargetException ex) {
+    //         throw new UnsupportedOperationException(ex);
+    //     }
+    // }
+
+    static java.lang.reflect.Method getDeclaredMethod(
+        final Object instance,
+        final String name,
+        final Class<?>... parameterTypes
+    ) throws NoSuchMethodException {
+        final java.lang.reflect.Method method = instance.getClass().getDeclaredMethod(name, parameterTypes);
+        method.setAccessible(true);
+        return method;
+    }
+
+    static java.lang.reflect.Method getMethod(
+        final Object instance,
+        final String name,
+        final Class<?>... parameterTypes
+    ) throws NoSuchMethodException {
+        final java.lang.reflect.Method method = instance.getClass().getMethod(name, parameterTypes);
+        method.setAccessible(true);
+        return method;
     }
 }
