@@ -22,6 +22,8 @@ buildNumber.properties
 git.properties
 .vagrant
 
+*.log
+
 /*.tar.gz
 /*.zip
 
