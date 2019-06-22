@@ -32,7 +32,7 @@
 .script_build: &script_build
   script:
     - if [[ -z "${CI_OPT_MAVEN_EFFECTIVE_POM}" ]]; then export CI_OPT_MAVEN_EFFECTIVE_POM="true"; fi;
-      time ./mvnw -e -ntp -U clean package;
+      time ./mvnw -e -ntp -U clean verify;
       find .mvn/profilerReport -name "*.json" | xargs cat | jq -r '.projects[]|"module:", .project, "plugins", (.mojos[]|[.mojo,.time]|@tsv)' | column -t;
       echo archive $(git ls-files -o | grep -Ev '.+-exec\.jar' | grep -v 'artifacts.tar.gz' | wc -l) files into artifacts.tar.gz;
       git ls-files -o | grep -Ev '.+-exec\.jar' | grep -v 'artifacts.tar.gz' | tar -czf artifacts.tar.gz -T -;
@@ -43,7 +43,7 @@
     # force publish on temp branch push
     #- export CI_OPT_PUBLISH_TO_REPO="true";
     - if [ -f artifacts.tar.gz ]; then tar -xzf artifacts.tar.gz; fi;
-      export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_MAVEN_INTEGRATIONTEST_SKIP="true"; export CI_OPT_MAVEN_TEST_SKIP="true";
+      export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_SKIPITS="true"; export CI_OPT_SKIPTESTS="true";
       time ./mvnw -e -ntp deploy;
       find .mvn/profilerReport -name "*.json" | xargs cat | jq -r '.projects[]|"module:", .project, "plugins", (.mojos[]|[.mojo,.time]|@tsv)' | column -t;
       echo archive $(git ls-files -o | grep -Ev '.+-exec\.jar' | grep -v 'artifacts.tar.gz' | wc -l) files into artifacts.tar.gz;
@@ -52,12 +52,8 @@
 .script_site: &script_site
   script:
     - if [ -f artifacts.tar.gz ]; then tar -xzf artifacts.tar.gz; fi;
-      export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_MAVEN_INTEGRATIONTEST_SKIP="true"; export CI_OPT_MAVEN_TEST_SKIP="true";
-      if [ "${CI_OPT_GITHUB_SITE_PUBLISH}" == "true" ]; then
-        time ./mvnw -e -ntp site site-deploy;
-      else
-        time ./mvnw -e -ntp site site:stage site:stage-deploy;
-      fi;
+      export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_SKIPITS="true"; export CI_OPT_SKIPTESTS="true";
+      time ./mvnw -e -ntp site site-deploy;
       find .mvn/profilerReport -name "*.json" | xargs cat | jq -r '.projects[]|"module:", .project, "plugins", (.mojos[]|[.mojo,.time]|@tsv)' | column -t;
 
 .upload_files_for_latter_stages: &upload_files_for_latter_stages
@@ -75,6 +71,8 @@ before_script:
     echo CI_PROJECT_URL ${CI_PROJECT_URL} CI_COMMIT_REF_NAME ${CI_COMMIT_REF_NAME}, CI_COMMIT_SHA ${CI_COMMIT_SHA}, CI_PROJECT_NAME ${CI_PROJECT_NAME}, CI_PROJECT_NAMESPACE ${CI_PROJECT_NAMESPACE};
   # environment variables
   # Settings -> CI / CD -> Variables -> Expand -> Save Variables
+  # CI_OPT_DOCKER_REGISTRY_PASS
+  # CI_OPT_DOCKER_REGISTRY_USER
   # CI_OPT_GPG_PASSPHRASE
   # CI_OPT_MAVEN_CENTRAL_PASS
   # CI_OPT_MAVEN_CENTRAL_USER
@@ -93,7 +91,6 @@ before_script:
   - export GITLAB_CI="${GITLAB_CI:-true}";
     if [[ "${CI_OPT_FAST}" != "true" ]]; then export CI_OPT_MAVEN_EFFECTIVE_POM="${CI_OPT_MAVEN_EFFECTIVE_POM:-false}"; fi;
     if [[ "${CI_OPT_FAST}" != "true" ]]; then export CI_OPT_SITE="${CI_OPT_SITE:-true}"; fi;
-    if [[ "${CI_OPT_FAST}" != "true" ]]; then export CI_OPT_SONAR="${CI_OPT_SONAR:-true}"; fi;
   - if [[ -z ${CI_OPT_GITHUB_SITE_PUBLISH} ]]; then
       if [[ "${CI_COMMIT_REF_NAME}" =~ ^release/.+ ]] || [[ "${CI_COMMIT_REF_NAME}" =~ ^support/.+ ]]; then export CI_OPT_GITHUB_SITE_PUBLISH="true"; else export CI_OPT_GITHUB_SITE_PUBLISH="false"; fi;
     fi;
@@ -107,7 +104,7 @@ before_script:
     export CI_OPT_MAVEN_BUILD_OPTS_REPO_REF="${CI_OPT_MAVEN_BUILD_OPTS_REPO_REF:-master}";
     export SETTINGS_GLOBAL_XML="${SETTINGS_GLOBAL_XML:-/tmp/settings-global-${CI_COMMIT_SHA}.xml}";
     export SETTINGS_GLOBAL_XML_URL="${CI_OPT_MAVEN_BUILD_OPTS_REPO}/raw/${CI_OPT_MAVEN_BUILD_OPTS_REPO_REF}/src/main/maven/settings-global.xml";
-  - if [[ -z "${MAVEN_OPTS}" ]]; then export MAVEN_OPTS="-XX:TieredStopAtLevel=1 -XX:+UseParallelGC -Dprofile -DprofileFormat=JSON,HTML"; fi;
+  - if [[ -z "${MAVEN_OPTS}" ]]; then export MAVEN_OPTS="-XX:TieredStopAtLevel=1 -XX:+UseParallelGC -Dprofile=title -DprofileFormat=JSON,HTML"; fi;
     ./mvnw -version;
     echo "download ${SETTINGS_GLOBAL_XML_URL} to ${SETTINGS_GLOBAL_XML}";
     curl -L "${SETTINGS_GLOBAL_XML_URL}" 2>/dev/null | tee ${SETTINGS_GLOBAL_XML};
@@ -131,7 +128,7 @@ analysis:
   stage: analysis
   script:
     - if [ -f artifacts.tar.gz ]; then tar -xzf artifacts.tar.gz; fi;
-      export CI_OPT_MAVEN_CLEAN_SKIP="true";
+      export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_SONAR="true";
       time ./mvnw -e -ntp sonar:sonar;
       find .mvn/profilerReport -name "*.json" | xargs cat | jq -r '.projects[]|"module:", .project, "plugins", (.mojos[]|[.mojo,.time]|@tsv)' | column -t;
   <<: *git_strategy_fetch
