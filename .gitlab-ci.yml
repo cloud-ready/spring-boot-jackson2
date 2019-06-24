@@ -44,7 +44,7 @@
     #- export CI_OPT_PUBLISH_TO_REPO="true";
     - if [ -f artifacts.tar.gz ]; then tar -xzf artifacts.tar.gz; fi;
       export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_SKIPITS="true"; export CI_OPT_SKIPTESTS="true";
-      time ./mvnw -e -ntp deploy;
+      time ./mvnw -e -ntp -Dfast=true deploy;
       find .mvn/profilerReport -name "*.json" | xargs cat | jq -r '.projects[]|"module:", .project, "plugins", (.mojos[]|[.mojo,.time]|@tsv)' | column -t;
       echo archive $(git ls-files -o | grep -Ev '.+-exec\.jar' | grep -v 'artifacts.tar.gz' | wc -l) files into artifacts.tar.gz;
       git ls-files -o | grep -Ev '.+-exec\.jar' | grep -v 'artifacts.tar.gz' | tar -czf artifacts.tar.gz -T -;
@@ -53,7 +53,7 @@
   script:
     - if [ -f artifacts.tar.gz ]; then tar -xzf artifacts.tar.gz; fi;
       export CI_OPT_MAVEN_CLEAN_SKIP="true"; export CI_OPT_SKIPITS="true"; export CI_OPT_SKIPTESTS="true";
-      time ./mvnw -e -ntp site site-deploy;
+      time ./mvnw -e -ntp site-deploy;
       find .mvn/profilerReport -name "*.json" | xargs cat | jq -r '.projects[]|"module:", .project, "plugins", (.mojos[]|[.mojo,.time]|@tsv)' | column -t;
 
 .upload_files_for_latter_stages: &upload_files_for_latter_stages
