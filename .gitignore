@@ -8,6 +8,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/*Report/
+profiler-report-*.*
 .mvn/*Repository/
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
