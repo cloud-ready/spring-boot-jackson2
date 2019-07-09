@@ -8,7 +8,7 @@
     <parent>
         <artifactId>cloud-ready-parent</artifactId>
         <groupId>top.infra</groupId>
-        <version>2.0.4-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -135,11 +135,11 @@
     <repositories>
         <!-- Make artifacts in OSSRH repositories available -->
         <repository>
-            <id>OSSRH-releases</id><name>central releases</name><url>https://oss.sonatype.org/content/repositories/releases/</url>
+            <id>ossrh-releases</id><name>central releases</name><url>https://oss.sonatype.org/content/repositories/releases/</url>
             <releases><enabled>true</enabled><updatePolicy>never</updatePolicy></releases><snapshots><enabled>false</enabled></snapshots>
         </repository>
         <repository>
-            <id>OSSRH-snapshots</id><name>central snapshots</name><url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>ossrh-snapshots</id><name>central snapshots</name><url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled><updatePolicy>daily</updatePolicy></snapshots>
         </repository>
     </repositories>

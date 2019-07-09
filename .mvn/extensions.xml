@@ -5,14 +5,18 @@ see:
 [Maven core extension resolution ignores repositories from activeByDefault profiles in settings.xml](https://issues.apache.org/jira/browse/MNG-5984)
 -->
 <extensions>
+    <!-- mvn install -Dprofile="profile name" -DprofileFormat=JSON,HTML -->
     <extension>
-        <groupId>fr.jcgay.maven</groupId>
-        <artifactId>maven-profiler</artifactId>
-        <version>2.6</version>
+        <groupId>fr.jcgay.maven</groupId><artifactId>maven-profiler</artifactId><version>2.6</version>
     </extension>
-    <extension>
-        <groupId>top.infra</groupId>
-        <artifactId>maven-build-extension</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </extension>
+
+    <!-- @formatter:off -->
+    <extension><artifactId>topinfra-maven-extension</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <extension><artifactId>topinfra-mvnext-module-docker</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <extension><artifactId>topinfra-mvnext-module-gitflow-semver</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <extension><artifactId>topinfra-mvnext-module-gpg-key</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <extension><artifactId>topinfra-mvnext-module-infrastructure-settings</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <extension><artifactId>topinfra-mvnext-module-maven-build-pom</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <extension><artifactId>topinfra-mvnext-module-settings-security</artifactId><groupId>top.infra.maven</groupId><version>0.0.1-SNAPSHOT</version></extension>
+    <!-- @formatter:on -->
 </extensions>
