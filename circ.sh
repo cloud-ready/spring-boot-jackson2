@@ -7,7 +7,7 @@ export CI_OPT_INFRASTRUCTURE="${CI_OPT_INFRASTRUCTURE:-ossrh}";
 export GIT_HOST="${GIT_HOST:-gitlab.com}";
 if [[ -z "${GIT_PREFIX}" ]]; then export GIT_PREFIX="https://${GIT_HOST}"; fi;
 export CI_OPT_GPG_KEYNAME="${CI_OPT_GPG_KEYNAME:-59DBF10E}";
-export CI_OPT_MVN_DEPLOY_PUBLISH_SEGREGATION="${CI_OPT_MVN_DEPLOY_PUBLISH_SEGREGATION:-false}";
+export CI_OPT_MVN_MULTI_STAGE_BUILD="${CI_OPT_MVN_MULTI_STAGE_BUILD:-false}";
 export CI_OPT_NEXUS2_STAGING="${CI_OPT_NEXUS2_STAGING:-true}";
 
 if [[ -n "${APPVEYOR_REPO_BRANCH}" ]]; then export APPVEYOR_ENABLED="${APPVEYOR_ENABLED:-true}"; fi;
@@ -24,7 +24,7 @@ if [[ "${CI_OPT_GITHUB_SITE_PUBLISH}" == "true" ]]; then
   if [[ "${APPVEYOR_ENABLED}" == "true" ]]; then export CI_OPT_GITHUB_GLOBAL_REPOSITORYOWNER="$(echo ${APPVEYOR_REPO_NAME} | awk -F'/' '{print $1}')"; fi;
   if [[ "${GITLAB_CI}" == "true" ]]; then export CI_OPT_GITHUB_GLOBAL_REPOSITORYOWNER="$(echo ${CI_PROJECT_PATH} | awk -F'/' '{print $1}')"; fi;
   if [[ "${TRAVIS_ENABLED}" == "true" ]]; then export CI_OPT_GITHUB_GLOBAL_REPOSITORYOWNER="$(echo ${TRAVIS_REPO_SLUG} | awk -F'/' '{print $1}')"; fi;
-  export CI_OPT_SITE_PATH_PREFIX="${CI_OPT_GITHUB_GLOBAL_REPOSITORYOWNER}";
+  export CI_OPT_SITE_PATH="${CI_OPT_GITHUB_GLOBAL_REPOSITORYOWNER}";
 else
   if [[ -z ${PUBLISH_CHANNEL} ]]; then
     if [[ -n "${APPVEYOR_REPO_BRANCH}" ]]; then REF_NAME="${APPVEYOR_REPO_BRANCH}"; elif [[ -n "${CI_COMMIT_REF_NAME}" ]]; then REF_NAME="${CI_COMMIT_REF_NAME}"; elif [[ -n "${TRAVIS_BRANCH}" ]]; then REF_NAME="${TRAVIS_BRANCH}"; fi;

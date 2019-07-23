@@ -7,20 +7,25 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-.mvn/*Report/
-profiler-report-*.*
-.mvn/*Repository/
+/.mvn/profiler-report/
+/.mvn/wagonRepository/
+/.m2/
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+/.profiler
 
-*.iml
 .idea/
+*.iml
+*.ipr
+*.iws
 
 .DS_Store
 
 *.asc
 git.properties
+*.versionsBackup
+/settings-security.xml
 .vagrant
 
 *.log
